@@ -1,0 +1,22 @@
+body{
+    overflow-x: hidden;
+}
+.phone{
+    display:flex;
+}
+.download{
+    position: relative;
+    display: flex;
+    left: -351px;
+    top: 450px;
+    width: 450px;
+   
+}
+.download .windows{
+    padding-left: 15px;
+}
+.stars{
+    position: relative;
+    top:250px;
+    left:150px;
+}
