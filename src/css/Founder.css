@@ -8,6 +8,9 @@
     padding-top: 60px;
     padding-bottom: 60px;
     flex-wrap: wrap;
+    background-image: url(../Assets/Background/Bg03.jpg);
+    background-size: cover;
+
 }
 .founderImage{
     width: 800px;

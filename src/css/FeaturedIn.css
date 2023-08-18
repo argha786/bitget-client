@@ -1,8 +1,9 @@
-.featureIn{
+.featuredIn{
     width: 100%;
     background-color: black;
     padding: 10px;
-    
+    background-image: url(../Assets/Background/Bg06.jpg);
+    background-size: cover;
     
 }
 .featureIn h1{

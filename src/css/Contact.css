@@ -1,10 +1,11 @@
-.contact{
-    color: black;
+.contact1, .contact2{
+    color: white;
     width: 100%;
-    background-image: url(https://i.pinimg.com/originals/ca/db/f0/cadbf02093dd8e7b4c9e74107ba7b27a.jpg);
+    /* background-image: url(../Assets/Contact.jpg); */
+    background-size: 100% 100%;
     padding: 20px;
     display: flex;
-    align-items: center;
+    align-items: center; 
     justify-content: center;
     flex-direction: column;
     padding-top: 190px;

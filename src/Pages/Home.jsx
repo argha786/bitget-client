@@ -20,10 +20,10 @@ export default function Home(){
                   
             <Welcome/>
             <WhatIs/>
-            <Actions/>
-
             <FeaturedIn/>
             <Phone/>
+            <Actions/>
+
             <Reviews/>
             <Founder/>
             <Contact/>

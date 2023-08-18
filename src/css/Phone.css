@@ -3,6 +3,10 @@ body{
 }
 .phone{
     display:flex;
+    background-image: url(../Assets/Background/Bg06.jpg);
+
+    background-size: cover;
+
 }
 .download{
     position: relative;
