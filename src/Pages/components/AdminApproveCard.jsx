@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 import "../../css/AdminActivatesAllCards.css"
 import swal from "sweetalert"
+import CircularProgress from '@mui/material/CircularProgress';
+
+
 export default function AdminApproveCard(props) {
 
 
@@ -14,27 +17,60 @@ export default function AdminApproveCard(props) {
     // address={element.address}
     // postalCode={element.postalCode}
     // country={element.country}
-
-    function handleApprove(e){
+    let [approveButton, setApproveButton] = useState('Approve Account')
+    let [disapproveButton, setDisapproveButton] = useState('Disapprove Account')
+    let [blockButton, setBlockButton] = useState('Block Account')
+    function handleApprove(e) {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER}/adminapproveaccount`, {userId: props.userId})
-        .then(async (response)=>{
-            if (response.status === 200) {
-                swal(`${response.data.message}`, "", "success")
-                await props.clickFunction();
-            }
-        })
+        setApproveButton(<CircularProgress color="inherit" />);
+        axios.post(`${process.env.REACT_APP_SERVER}/adminapproveaccount`, { userId: props.userId },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
+            .then(async (response) => {
+                setApproveButton('Approve Account')
+                if (response.status === 200) {
+                    swal(`${response.data.message}`, "", "success")
+                    await props.clickFunction();
+                }
+            })
     }
 
-    function handleDisapprove(e){
+    function handleDisapprove(e) {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER}/admindisapproveaccount`, {userId: props.userId})
-        .then(async (response)=>{
-            if (response.status === 200) {
-                swal(`${response.data.message}`, "", "success")
-                await props.clickFunction();
-            }
-        })
+        setDisapproveButton(<CircularProgress color="inherit" />);
+        axios.post(`${process.env.REACT_APP_SERVER}/admindisapproveaccount`, { userId: props.userId },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
+            .then(async (response) => {
+                setDisapproveButton('Disapprove Account')
+                if (response.status === 200) {
+                    swal(`${response.data.message}`, "", "success")
+                    await props.clickFunction();
+                }
+            })
+    }
+    function handleBlock(e) {
+        e.preventDefault();
+        setBlockButton(<CircularProgress color="inherit" />);
+        axios.post(`${process.env.REACT_APP_SERVER}/adminblockuser`, { email: props.email },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
+            .then(async (response) => {
+                setBlockButton('Block Account')
+                if (response.status === 200) {
+                    swal(`${response.data.message}`, "", "success")
+                    await props.clickFunction();
+                }
+            })
     }
 
     return (
@@ -47,13 +83,15 @@ export default function AdminApproveCard(props) {
             <div>Address: <p>{props.address}</p></div>
             <div>Postal Code: <p>{props.postalCode}</p></div>
             <div>Country: <p>{props.country}</p></div>
-            <br/>
+            <div>Mobile: <p>{props.mobile}</p></div>
+            <br />
             <div>Image: <a href={props.image} target="_blank" rel="noreferrer">View image</a></div>
             <div>ID: <a href={props.Id} target="_blank" rel="noreferrer">View ID</a></div>
-            <br/>
+            <br />
             <div>
-                <button onClick={handleApprove} >Approve Account</button>
-                <button onClick={handleDisapprove}>Disapprove Account</button>
+                <button onClick={handleApprove} >{approveButton}</button>
+                <button onClick={handleDisapprove}>{disapproveButton}</button>
+                <button onClick={handleBlock}>{blockButton}</button>
             </div>
 
 

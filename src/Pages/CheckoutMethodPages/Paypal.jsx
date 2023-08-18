@@ -1,39 +1,51 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import "../../css/Payment.css"
 
 import ParticleAnimation from "../components/ParticleAnimation";
 import swal from "sweetalert"
 import axios from "axios"
 import { useHistory } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 
+import PaypalImage from "../../Assets/PaypalWithdrawal1.png"
 export default function Paypal() {
 
-    let [amount, setAmount] = useState();
-    let history=useHistory()
-
+    let [amount, setAmount] = useState("");
+    let history = useHistory();
+    let [email, setEmail]=useState("");
+    let [withdrawButton, setWithdrawButton] = useState("Withdraw");
 
     function handleClick(e) {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER}/withdrawal`, { userId: JSON.parse(localStorage.getItem("data")).userId, amount: amount })
+        setWithdrawButton(<CircularProgress color="inherit" />);
+        axios.post(`${process.env.REACT_APP_SERVER}/withdrawal`, { userId: JSON.parse(localStorage.getItem("data")).userId, amount: amount, mode: "Paypal Withdrawal", address: email },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            })
             .then((response) => {
+                setWithdrawButton("Withdraw")
+
                 if (response.status === 200) {
                     swal("Withdrawal Complete!", "Withdrawal amount has been deducted from your balance.", "success")
+                        .then(() => history.push("/user/dashboard"));
                 } else if (response.status === 203) {
-                    
+
                     swal({
                         title: "Oops! Your card is inactive!",
                         text: "Your withdrawal is not allowed. Please activate your debit card for withdrawal",
                         icon: "error",
                         button: "Activate Now ",
                     })
-                    .then(()=>{
-                        history.push("/card");
-                    })
-                }else if (response.status === 202) {
-                    
+                        .then(() => {
+                            history.push("/card");
+                        })
+                } else if (response.status === 202) {
+
                     swal(`${response.data.message}`, "", "error")
                 }
-                
+
             })
     }
 
@@ -41,12 +53,15 @@ export default function Paypal() {
 
     return (
         <div className="payment" >
+            <div className="backButton">
+                <i class="fas fa-chevron-circle-left" onClick={() => history.goBack()} />
+            </div>
             <ParticleAnimation />
-            <h2>Withdraw using Paypal</h2>
-            <form style={{ "marginTop": "20px" }} >
+            <h1 style={{ "width": "100%", "textAlign": "center" }} >Paypal Withdrawal</h1>
+            <form style={{ "marginTop": "20px" }} className="withdrawalCardImage">
                 <br />
                 <br />
-                <img src="https://i.pcmag.com/imagery/reviews/068BjcjwBw0snwHIq0KNo5m-15..v1602794215.png" alt="Paypal" />
+                <img src={PaypalImage} alt="Paypal" />
                 <input
                     type="text"
                     placeholder="Full Name*"
@@ -54,16 +69,18 @@ export default function Paypal() {
                 <input
                     type="text"
                     placeholder="Paypal Email Address*"
+                    value={email}
+                    onChange={(e)=>{setEmail(e.target.value)}}
                 />
                 <input
-                    type="text"
+                    type="number"
                     placeholder="Amount*"
                     value={amount}
-                    onChange={(e)=>{
+                    onChange={(e) => {
                         setAmount(e.target.value)
                     }}
                 />
-                <button onClick={handleClick} >Withdraw</button>
+                <button onClick={handleClick} >{withdrawButton}</button>
                 <br />
                 <br />
             </form>

@@ -11,7 +11,12 @@ export default function AdminHome() {
     let [request, setRequest] = useState([]);
 
     async function fetchRequest() {
-        await axios.get(`${process.env.REACT_APP_SERVER}/admingetallaccountrequest`)
+        await axios.get(`${process.env.REACT_APP_SERVER}/admingetallaccountrequest`,
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
             .then(async (response) => {
                 let temp = [];
                 response.data.forEach(element => {
@@ -38,26 +43,27 @@ export default function AdminHome() {
                     <div>
                         {   // eslint-disable-next-line
                             request.map((element) => {
-                            if(element.approvalStatus === "Pending"){
-                                return(
-                                <AdminApproveCard
-                                    userId={element.userId}
-                                    fName={element.fName}
-                                    lName={element.lName}
-                                    email={element.email}
-                                    dob={element.dob}
-                                    address={element.address}
-                                    postalCode={element.postalCode}
-                                    country={element.country}
-                                    image={element.image}
-                                    Id={element.Id}
-                                    clickFunction={fetchRequest}
+                                if (element.approvalStatus === "Pending") {
+                                    return (
+                                        <AdminApproveCard
+                                            userId={element.userId}
+                                            fName={element.fName}
+                                            lName={element.lName}
+                                            email={element.email}
+                                            dob={element.dob}
+                                            address={element.address}
+                                            postalCode={element.postalCode}
+                                            country={element.country}
+                                            image={element.image}
+                                            Id={element.Id}
+                                            mobile={element.mobile}
+                                            clickFunction={fetchRequest}
 
-                                />
-                            )
-                            }
-                            
-                        })}
+                                        />
+                                    )
+                                }
+
+                            })}
                     </div>
 
                 </div>

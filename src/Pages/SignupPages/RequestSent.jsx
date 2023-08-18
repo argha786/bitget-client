@@ -15,7 +15,7 @@ export default function RequestSent(){
             <ParticleAnimation/>
         
             <form style={{"backgroundColor":"transparent", "marginTop":"10px"}} >
-                <img src={Request} alt="Request Sent" />
+                <img src={Request} alt="Request Sent" id="requestSentImage" />
                 <h1>Request Sent !</h1>
                 <br/>
                 <p>Your registration request has sent successfully, and is now waiting for administrator approval. As soon as your request is approved you will receive a confirmation mail.</p>

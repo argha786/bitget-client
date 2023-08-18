@@ -23,3 +23,9 @@
 .options img{
     width: 50%;
 }
+@media only screen and (max-width: 650px){
+
+    .account img{
+        width: 100%;
+    }
+}

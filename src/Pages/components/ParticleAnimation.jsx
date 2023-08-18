@@ -4,13 +4,13 @@ import Particles from "react-tsparticles";
 
 export default function ParticleAnimation() {
     const particlesInit = (main) => {
-        // console.log(main);
+        // console.log(main)
 
         // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
     };
 
     const particlesLoaded = (container) => {
-        // console.log(container);
+        // console.log(container)
     };
     return (
         <div id="tsparticles">
@@ -55,10 +55,10 @@ export default function ParticleAnimation() {
                     },
                     particles: {
                         color: {
-                            value: "#FFC702"
+                            value: "#F806CC"
                         },
                         links: {
-                            color: "#783B37",
+                            color: "#ffffff",
                             distance: 200,
                             enable: true,
                             opacity: 1,

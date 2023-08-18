@@ -1,9 +1,11 @@
 import React from "react";
 import "../../css/Actions.css"
 
-import Order from "../../Assets/Order.gif"
-import Pay from "../../Assets/Pay.gif"
-import USD from "../../Assets/USD.gif"
+import Order from "../../Assets/Order.png"
+import Pay from "../../Assets/Pay.png"
+import Pay2 from "../../Assets/Pay2.png"
+
+import USD from "../../Assets/USD.png"
 
 export default function Actions(){
     return(
@@ -11,18 +13,19 @@ export default function Actions(){
 
             <div className="actionCard" >
                 <img src={Order} alt="Order"/>
-                <h1>PLACE AN ORDER</h1>
-                <h3>You’ll be auto-matched with a seller instantly</h3>
+                <h1>Sign Up</h1>
             </div>
             <div className="actionCard" >
                 <img src={Pay} alt="pay" />
-                <h1>PAY DIRECTLY TO SELLER</h1>
-                <h3>You’ll be auto-matched with a seller instantly</h3>
+                <h1>Fund Receive/Transfer globally</h1>
+            </div>
+            <div className="actionCard" >
+                <img src={Pay2} alt="pay" />
+                <h1>Activate Debit Card</h1>
             </div>
             <div className="actionCard" >
                 <img src={USD} alt="USD" />
-                <h1>RELEASES THE USD</h1>
-                <h3>You’ll be auto-matched with a seller instantly</h3>
+                <h1>Withdraw funds to bank/bitcoin and paypal</h1>
             </div>
         </div>
     );

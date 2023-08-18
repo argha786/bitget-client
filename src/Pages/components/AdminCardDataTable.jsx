@@ -39,7 +39,7 @@ export default function AdminCardDataTable() {
     await axios.get(`${process.env.REACT_APP_SERVER}/getalluser`)
     .then(async (response)=>{
       await setTempRows(response.data);
-      console.log(response.data)
+      // console.log(response.data)
 
       response.data.map(async (element)=>{
         await temp.push(createData(element.fName + ` ` +element.lName, element.merchant, element.worldElite, element.classic, element.prime, element.titanium));

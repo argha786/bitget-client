@@ -5,54 +5,64 @@ import "../../css/Payment.css"
 import "../../css/Admin.css"
 import axios from "axios"
 
-export default function AdminDraft(){
+export default function AdminDraft() {
 
-    let [draft, setDraft]=useState();
-    let [rDraft, setRDraft]=useState([]);
+    let [draft, setDraft] = useState();
+    let [rDraft, setRDraft] = useState([]);
 
-    function handleClick(e){
+    function handleClick(e) {
 
-        const draftPost={
+        const draftPost = {
             draft: draft
         }
 
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER}/admindrafts` , draftPost )
-        .then((response)=>{
-            console.log(response)
-        })
-        a=1;
+        axios.post(`${process.env.REACT_APP_SERVER}/admindrafts`, draftPost,
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
+            .then((response) => {
+                // console.log(response)
+            })
+        a = 1;
     }
 
     let a;
-    async function fetchDraft(){
+    async function fetchDraft() {
 
-        let temp=[];
-        await axios.get(`${process.env.REACT_APP_SERVER}/getdrafts`)
-        .then(async (response)=>{
-            response.data.forEach(async (element) => {
-                await temp.push(element);
-            });
+        let temp = [];
+        await axios.get(`${process.env.REACT_APP_SERVER}/getdrafts`,
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
+            .then(async (response) => {
+                response.data.forEach(async (element) => {
+                    await temp.push(element);
+                });
 
-            await setRDraft(temp);
-            await console.log(rDraft);
-        })
+                await setRDraft(temp);
+                // await console.log(rDraft)
+            })
     }
-    useEffect(()=>{
+    useEffect(() => {
         fetchDraft();
         // eslint-disable-next-line
     }, [a]);
-    return(
-        
+    return (
+
         <div className="payment draft" >
 
             <h2>Admin Drafts</h2>
-            <AdminNavbar/>
+            <AdminNavbar />
 
             <form>
                 <textarea
                     placeholder="Enter text"
-                    onChange={(e)=>{
+                    onChange={(e) => {
                         setDraft(e.target.value)
                     }}
                     value={draft}
@@ -60,8 +70,8 @@ export default function AdminDraft(){
                 />
                 <button type="submit" onClick={handleClick} >Create</button>
             </form>
-            {rDraft.map((element)=>{
-                return(
+            {rDraft.map((element) => {
+                return (
                     <div>{element.draft}</div>
                 )
             })}

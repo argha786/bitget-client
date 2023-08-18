@@ -19,7 +19,7 @@ export default function Login() {
         // console.log(login);
         await axios.post("http://localhost:5000/login", login)
             .then(async (response) => {
-                console.log(response.data);
+                // console.log(response.data)
                 await localStorage.setItem("token", response.data.token);
                 await localStorage.setItem("data", JSON.stringify(response.data.user));
                 await localStorage.setItem("card", JSON.stringify(response.data.card));
@@ -29,10 +29,10 @@ export default function Login() {
                     window.location.reload();
                 }else if(response.status === 401){
                     swal("Invalid credentials!", "Please try again with correct credentials.", "error");
-                    console.log(response.data);
+                    // console.log(response.data)
                 }else{
                     swal("Error!", "Some unexpected error occurred.", "error")
-                    console.log(response.data);
+                    // console.log(response.data)
                 }
             });
     }

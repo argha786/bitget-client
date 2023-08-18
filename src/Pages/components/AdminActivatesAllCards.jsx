@@ -3,17 +3,39 @@ import axios from "axios";
 
 import "../../css/AdminActivatesAllCards.css"
 import swal from "sweetalert"
+import CircularProgress from '@mui/material/CircularProgress';
+
 export default function AdminActivatesAllCards(props) {
 
     let [primeNumber, setPrimeNumber] = useState(props.primeData.cardNumber);
     let [primeMonth, setPrimeMonth] = useState(props.primeData.expiryMonth);
     let [primeYear, setPrimeYear] = useState(props.primeData.expiryYear);
     let [primeCvv, setPrimeCvv] = useState(props.primeData.cvv);
-    
+
     let [classicNumber, setClassicNumber] = useState(props.classicData.cardNumber);
     let [classicMonth, setClassicMonth] = useState(props.classicData.expiryMonth);
     let [classicYear, setClassicYear] = useState(props.classicData.expiryYear);
     let [classicCvv, setClassicCvv] = useState(props.classicData.cvv);
+
+    let [titaniumNumber, setTitaniumNumber] = useState(props.titaniumData.cardNumber);
+    let [titaniumMonth, setTitaniumMonth] = useState(props.titaniumData.expiryMonth);
+    let [titaniumYear, setTitaniumYear] = useState(props.titaniumData.expiryYear);
+    let [titaniumCvv, setTitaniumCvv] = useState(props.titaniumData.cvv);
+
+    let [primeUpdateButton, setPrimeUpdateButton] = useState("Update");
+    let [primeActivateButton, setPrimeActivateButton] = useState("Activate");
+    let [primeAwaitButton, setPrimeAwaitButton] = useState("Await");
+    let [primeDeactivateButton, setPrimeDeactivateButton] = useState("Deactivate");
+
+    let [classicUpdateButton, setClassicUpdateButton] = useState("Update");
+    let [classicActivateButton, setClassicActivateButton] = useState("Activate");
+    let [classicAwaitButton, setClassicAwaitButton] = useState("Await");
+    let [classicDeactivateButton, setClassicDeactivateButton] = useState("Deactivate");
+
+    let [titaniumUpdateButton, setTitaniumUpdateButton] = useState("Update");
+    let [titaniumActivateButton, setTitaniumActivateButton] = useState("Activate");
+    let [titaniumAwaitButton, setTitaniumAwaitButton] = useState("Await");
+    let [titaniumDeactivateButton, setTitaniumDeactivateButton] = useState("Deactivate");
 
     let primeData = {
         userId: props.userId,
@@ -31,29 +53,72 @@ export default function AdminActivatesAllCards(props) {
         expiryYear: classicYear,
         cvv: classicCvv
     }
+    let titaniumData = {
+        userId: props.userId,
+        cardName: "titanium",
+        cardNumber: titaniumNumber,
+        expiryMonth: titaniumMonth,
+        expiryYear: titaniumYear,
+        cvv: titaniumCvv
+    }
     function handlePrimeCardUpdate(e) {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER}/updatecarddata`, primeData )
-        .then((response)=>{
-            if (response.status === 200) {
-                swal(`${response.data.message}`, "", "success")
-            }else if (response.status === 202) {
-                swal(`${response.data.message}`, "", "error")
-            }
-        })
+
+        setPrimeUpdateButton(<CircularProgress color="inherit" />);
+        axios.post(`${process.env.REACT_APP_SERVER}/updatecarddata`, primeData,
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
+            .then((response) => {
+                setPrimeUpdateButton("Update")
+                if (response.status === 200) {
+                    swal(`${response.data.message}`, "", "success")
+                } else if (response.status === 202) {
+                    swal(`${response.data.message}`, "", "error")
+                }
+            })
     }
     function handleClassicCardUpdate(e) {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER}/updatecarddata`, classicData )
-        .then((response)=>{
-            if (response.status === 200) {
-                swal(`${response.data.message}`, "", "success")
-            }else if (response.status === 202) {
-                swal(`${response.data.message}`, "", "error")
-            }
-        })
+        setClassicUpdateButton(<CircularProgress color="inherit" />);
+        axios.post(`${process.env.REACT_APP_SERVER}/updatecarddata`, classicData,
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
+            .then((response) => {
+
+                setClassicUpdateButton("Update")
+                if (response.status === 200) {
+                    swal(`${response.data.message}`, "", "success")
+                } else if (response.status === 202) {
+                    swal(`${response.data.message}`, "", "error")
+                }
+            })
     }
 
+    function handleTitaniumCardUpdate(e) {
+        e.preventDefault();
+        setTitaniumUpdateButton(<CircularProgress color="inherit" />);
+        axios.post(`${process.env.REACT_APP_SERVER}/updatecarddata`, titaniumData,
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                }
+            })
+            .then((response) => {
+
+                setTitaniumUpdateButton("Update")
+                if (response.status === 200) {
+                    swal(`${response.data.message}`, "", "success")
+                } else if (response.status === 202) {
+                    swal(`${response.data.message}`, "", "error")
+                }
+            })
+    }
 
     return (
         <div style={{ "border": "2px solid orange", "padding": "4px", "marginBottom": "11px" }} className="adminActivatesAllCards" >
@@ -86,31 +151,55 @@ export default function AdminActivatesAllCards(props) {
                     value={primeCvv}
                     onChange={(e) => setPrimeCvv(e.target.value)}
                 />
-                <button onClick={handlePrimeCardUpdate} >Update</button>
+                <button onClick={handlePrimeCardUpdate} >{primeUpdateButton}</button>
             </div>
             <div className="actionButton">
                 <div>Update Classic Master Card</div>
                 <input
                     placeholder="Card Number "
                     value={classicNumber}
-                    onChange={(e)=>setClassicNumber(e.target.value)}
+                    onChange={(e) => setClassicNumber(e.target.value)}
                 />
                 <input
                     placeholder="Expiry Month"
                     value={classicMonth}
-                    onChange={(e)=>setClassicMonth(e.target.value)}
+                    onChange={(e) => setClassicMonth(e.target.value)}
                 />
                 <input
                     placeholder="Expiry Year"
                     value={classicYear}
-                    onChange={(e)=>setClassicYear(e.target.value)}
+                    onChange={(e) => setClassicYear(e.target.value)}
                 />
                 <input
                     placeholder="CVV"
                     value={classicCvv}
-                    onChange={(e)=>setClassicCvv(e.target.value)}
+                    onChange={(e) => setClassicCvv(e.target.value)}
                 />
-                <button onClick={handleClassicCardUpdate} >Update</button>
+                <button onClick={handleClassicCardUpdate} >{classicUpdateButton}</button>
+            </div>
+            <div className="actionButton">
+                <div>Update Titanium Master Card</div>
+                <input
+                    placeholder="Card Number "
+                    value={titaniumNumber}
+                    onChange={(e) => setTitaniumNumber(e.target.value)}
+                />
+                <input
+                    placeholder="Expiry Month"
+                    value={titaniumMonth}
+                    onChange={(e) => setTitaniumMonth(e.target.value)}
+                />
+                <input
+                    placeholder="Expiry Year"
+                    value={titaniumYear}
+                    onChange={(e) => setTitaniumYear(e.target.value)}
+                />
+                <input
+                    placeholder="CVV"
+                    value={titaniumCvv}
+                    onChange={(e) => setTitaniumCvv(e.target.value)}
+                />
+                <button onClick={handleTitaniumCardUpdate} >{titaniumUpdateButton}</button>
             </div>
 
             <br />
@@ -118,24 +207,78 @@ export default function AdminActivatesAllCards(props) {
                 <div>Prime Master Card <p>(Status: {props.prime})</p></div>
                 {(props.prime === "Pending" || props.prime === "Inactive")
                     ? <button onClick={async () => {
-                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "activate" })
-                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "deactivate" })
+                        setPrimeActivateButton(<CircularProgress color="inherit" />);
+                        setPrimeAwaitButton("Await");
+                        setPrimeDeactivateButton("Deactivate");
+                        setClassicActivateButton("Activate");
+                        setClassicAwaitButton("Await");
+                        setClassicDeactivateButton("Deactivate");
+                        setTitaniumActivateButton("Activate");
+                        setTitaniumAwaitButton("Await");
+                        setTitaniumDeactivateButton("Deactivate");
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "activate" }, {
+                            headers: {
+                                "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                            }
+                        })
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "titanium", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
                         await props.clickFunction();
-                    }} >Activate</button>
+                    }} >{primeActivateButton}</button>
                     : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Activated</button>
                 }
                 {(props.prime === "Approved" || props.prime === "Inactive")
                     ? <button onClick={async () => {
-                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "pending" })
+                        setPrimeActivateButton("Activate");
+                        setPrimeAwaitButton(<CircularProgress color="inherit" />);
+                        setPrimeDeactivateButton("Deactivate");
+                        setClassicActivateButton("Activate");
+                        setClassicAwaitButton("Await");
+                        setClassicDeactivateButton("Deactivate");
+                        setTitaniumActivateButton("Activate");
+                        setTitaniumAwaitButton("Await");
+                        setTitaniumDeactivateButton("Deactivate");
+
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "pending" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
                         await props.clickFunction();
-                    }} >Await</button>
+                    }} >{primeAwaitButton}</button>
                     : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Pending</button>
                 }
                 {(props.prime === "Pending" || props.prime === "Approved")
                     ? <button onClick={async () => {
-                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "deactivate" })
+                        setPrimeActivateButton("Activate");
+                        setPrimeAwaitButton("Await");
+                        setPrimeDeactivateButton(<CircularProgress color="inherit" />);
+                        setClassicActivateButton("Activate");
+                        setClassicAwaitButton("Await");
+                        setClassicDeactivateButton("Deactivate");
+                        setTitaniumActivateButton("Activate");
+                        setTitaniumAwaitButton("Await");
+                        setTitaniumDeactivateButton("Deactivate");
+
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
                         await props.clickFunction();
-                    }} >Deactivate</button>
+                    }} >{primeDeactivateButton}</button>
                     : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Deactivated</button>
                 }
             </div>
@@ -144,25 +287,164 @@ export default function AdminActivatesAllCards(props) {
 
                 {(props.classic === "Pending" || props.classic === "Inactive")
                     ? <button onClick={async () => {
-                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "activate" })
-                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "deactivate" })
+                        setPrimeActivateButton("Activate");
+                        setPrimeAwaitButton("Await");
+                        setPrimeDeactivateButton("Deactivate");
+                        setClassicActivateButton(<CircularProgress color="inherit" />);
+                        setClassicAwaitButton("Await");
+                        setClassicDeactivateButton("Deactivate");
+                        setTitaniumActivateButton("Activate");
+                        setTitaniumAwaitButton("Await");
+                        setTitaniumDeactivateButton("Deactivate");
+
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "activate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "titanium", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
                         await props.clickFunction();
 
-                    }} >Activate</button>
+                    }} >{classicActivateButton}</button>
                     : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Activated</button>
                 }
                 {(props.classic === "Approved" || props.classic === "Inactive")
                     ? <button onClick={async () => {
-                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "pending" })
+                        setPrimeActivateButton("Activate");
+                        setPrimeAwaitButton("Await");
+                        setPrimeDeactivateButton("Deactivate");
+                        setClassicActivateButton("Activate");
+                        setClassicAwaitButton(<CircularProgress color="inherit" />);
+                        setClassicDeactivateButton("Deactivate");
+                        setTitaniumActivateButton("Activate");
+                        setTitaniumAwaitButton("Await");
+                        setTitaniumDeactivateButton("Deactivate");
+
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "pending" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
                         await props.clickFunction();
-                    }} >Await</button>
+                    }} >{classicAwaitButton}</button>
                     : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Pending</button>
                 }
                 {(props.classic === "Pending" || props.classic === "Approved")
                     ? <button onClick={async () => {
-                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "deactivate" })
+                        setPrimeActivateButton("Activate");
+                        setPrimeAwaitButton("Await");
+                        setPrimeDeactivateButton("Deactivate");
+                        setClassicActivateButton("Activate");
+                        setClassicAwaitButton("Await");
+                        setClassicDeactivateButton(<CircularProgress color="inherit" />);
+                        setTitaniumActivateButton("Activate");
+                        setTitaniumAwaitButton("Await");
+                        setTitaniumDeactivateButton("Deactivate");
+
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
                         await props.clickFunction();
-                    }} >Deactivate</button>
+                    }} >{classicDeactivateButton}</button>
+                    : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Deactivated</button>
+                }
+            </div>
+            <div className="actionButton" >
+                <div>Titanium Master Card <p>(Status: {props.titanium})</p></div>
+
+                {(props.titanium === "Pending" || props.titanium === "Inactive")
+                    ? <button onClick={async () => {
+                        setPrimeActivateButton("Activate");
+                        setPrimeAwaitButton("Await");
+                        setPrimeDeactivateButton("Deactivate");
+                        setClassicActivateButton("Activate");
+                        setClassicAwaitButton("Await");
+                        setClassicDeactivateButton("Deactivate");
+                        setTitaniumActivateButton(<CircularProgress color="inherit" />);
+                        setTitaniumAwaitButton("Await");
+                        setTitaniumDeactivateButton("Deactivate");
+
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "titanium", action: "activate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "prime", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "classic", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
+                        await props.clickFunction();
+
+                    }} >{titaniumActivateButton}</button>
+                    : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Activated</button>
+                }
+                {(props.titanium === "Approved" || props.titanium === "Inactive")
+                    ? <button onClick={async () => {
+                        setPrimeActivateButton("Activate");
+                        setPrimeAwaitButton("Await");
+                        setPrimeDeactivateButton("Deactivate");
+                        setClassicActivateButton("Activate");
+                        setClassicAwaitButton("Await");
+                        setClassicDeactivateButton("Deactivate");
+                        setTitaniumActivateButton("Activate");
+                        setTitaniumAwaitButton(<CircularProgress color="inherit" />);
+                        setTitaniumDeactivateButton("Deactivate");
+
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "titanium", action: "pending" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
+                        await props.clickFunction();
+                    }} >{titaniumAwaitButton}</button>
+                    : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Pending</button>
+                }
+                {(props.titanium === "Pending" || props.titanium === "Approved")
+                    ? <button onClick={async () => {
+                        setPrimeActivateButton("Activate");
+                        setPrimeAwaitButton("Await");
+                        setPrimeDeactivateButton("Deactivate");
+                        setClassicActivateButton("Activate");
+                        setClassicAwaitButton("Await");
+                        setClassicDeactivateButton("Deactivate");
+                        setTitaniumActivateButton("Activate");
+                        setTitaniumAwaitButton("Await");
+                        setTitaniumDeactivateButton(<CircularProgress color="inherit" />);
+
+                        await axios.post(`${process.env.REACT_APP_SERVER}/adminactivatedeactivatecontrol`, { userId: props.userId, cardName: "titanium", action: "deactivate" },
+                            {
+                                headers: {
+                                    "Authorization": `Bearer ${localStorage.getItem("aToken")}`
+                                }
+                            })
+                        await props.clickFunction();
+                    }} >{titaniumDeactivateButton}</button>
                     : <button style={{ "color": "#DF2D07", "backgroundColor": "black" }} >Deactivated</button>
                 }
             </div>

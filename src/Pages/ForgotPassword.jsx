@@ -5,18 +5,28 @@ import ParticleAnimation from "./components/ParticleAnimation";
 import axios from "axios"
 import { useHistory } from "react-router-dom";
 
+import CircularProgress from '@mui/material/CircularProgress';
 export default function ForgotPassword() {
 
-    let history=useHistory()
-    let [email, setEmail]=useState();
-    function handleClick(e){
+    let history = useHistory()
+    let [email, setEmail] = useState();
+
+    let [submitButton, setSubmitButton]=useState("Submit");
+    function handleClick(e) {
         e.preventDefault();
 
-        axios.post(`${process.env.REACT_APP_SERVER}/handleotp`, {email: email})
-        .then((response)=>{
-            sessionStorage.setItem("otpId", response.data);
-            history.push("/user/changepassword")
-        })
+        setSubmitButton(<CircularProgress color="inherit" />)
+        axios.post(`${process.env.REACT_APP_SERVER}/handleotp`, { email: email },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+            .then((response) => {
+                setSubmitButton("Submit");
+                sessionStorage.setItem("otpId", response.data.userId);
+                history.push("/user/changepassword")
+            })
     }
 
 
@@ -25,15 +35,16 @@ export default function ForgotPassword() {
 
     return (
         <div className="payment" >
-            <ParticleAnimation/>
+            <ParticleAnimation />
             <form>
                 <h1>ForgotPassword</h1>
                 <input
+                    type="email"
                     placeholder="Enter email"
                     value={email}
-                    onChange={(e)=>{setEmail(e.target.value)}}
+                    onChange={(e) => { setEmail(e.target.value) }}
                 />
-                <button onClick={handleClick} >Submit</button>
+                <button onClick={handleClick} >{submitButton}</button>
 
             </form>
         </div>

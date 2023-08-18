@@ -54,7 +54,14 @@ import ChangePassword from "./Pages/ChangePassword";
 
 import UserTransaction from "./Pages/UserTransaction";
 import AdminBulkTransferAction from "./Pages/Admin/AdminBulkTransferAction";
+import AdminBulkRegisterUser from "./Pages/Admin/AdminBulkRegisterUser";
+import AdminReport from "./Pages/Admin/AdminReport";
+import AdminSupport from "./Pages/Admin/AdminSupport";
+import AdminUserDetails from "./Pages/Admin/AdminUserDetails";
+import AdminSingleUserRegistration from "./Pages/Admin/AdminSingleUserRegistration";
+import AdminSendInterest from "./Pages/Admin/AdminSendInterest";
 
+import AdminChangePaymentAddress from "./Pages/Admin/AdminChangePaymentAddress";
 function App() {
     return (
 
@@ -62,7 +69,7 @@ function App() {
 
             <Router>
                 {/* <CurrentNavbar /> */}
-                <Header/>
+                <Header />
 
                 <Switch>
 
@@ -71,12 +78,13 @@ function App() {
                     </Route>
 
                     <Route exact path="/login" >
-                        {localStorage.getItem("token") ? <Dashboard/>: <Login/>}
+                        {localStorage.getItem("token") ? <Dashboard /> : <Login />}
                         {/* <Login /> */}
                     </Route>
 
                     <Route exact path="/signup" >
-                        <Signup />
+                        {localStorage.getItem("token") ? <Dashboard /> : <Signup />}
+
                     </Route>
 
                     <Route exact path="/logout" >
@@ -90,8 +98,7 @@ function App() {
                     </Route>
 
                     <Route exact path="/card" >
-                    {localStorage.getItem("token") ? <ActiveDebitCard /> : <Login />}
-                        <ActiveDebitCard />
+                        {localStorage.getItem("token") ? <ActiveDebitCard /> : <Login />}
                     </Route>
 
                     <Route exact path="/bankwithdrawal" >
@@ -151,96 +158,143 @@ function App() {
                         <Wallet />
                     </Route>
 
-                    <Route exact path="/admin" >
-                        {localStorage.getItem("aToken") ? <AdminHome/>: <AdminLogin/> }
-                       
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11" >
+                        {localStorage.getItem("aToken") ? <AdminHome /> : <AdminLogin />}
+
                     </Route>
 
-                    <Route exact path="/admin/home" >
-                        {localStorage.getItem("aToken") ? <AdminHome/> : <Home/> }
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/home" >
+                        {localStorage.getItem("aToken") ? <AdminHome /> : <Home />}
                     </Route>
 
-                    <Route exact path="/admin/drafts" >
-                        {localStorage.getItem("aToken") ? <AdminDraft/> : <Home/> }
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/drafts" >
+                        {localStorage.getItem("aToken") ? <AdminDraft /> : <Home />}
                     </Route>
 
-                    <Route exact path="/admin/status" >
-                        {localStorage.getItem("aToken") ? <AdminStatus/> : <Home/> }
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/status" >
+                        {localStorage.getItem("aToken") ? <AdminStatus /> : <Home />}
                     </Route>
 
                     <Route exact path="/user/profile" >
-                        <Profile/>
+                        <Profile />
                     </Route>
 
                     <Route exact path="/user/dashboard" >
-                        <Dashboard/>
+                        {localStorage.getItem("token") ? <Dashboard /> : <Home />}
                     </Route>
 
                     <Route exact path="/forgotpassword" >
-                        <ForgotPassword/>
+                        <ForgotPassword />
                     </Route>
 
                     <Route exact path="/worldelitemastercard" >
-                        <WorldEliteMasterCard/>
+                        <WorldEliteMasterCard />
                     </Route>
 
                     <Route exact path="/titaniummastercard" >
-                        <TitaniumMasterCard/>
+                        <TitaniumMasterCard />
                     </Route>
 
                     <Route exact path="/signup/verifyotp" >
-                        <VerifyOtp/>
+                        <VerifyOtp />
                     </Route>
 
                     <Route exact path="/signup/personalinformation" >
-                        <PersonalInformation/>
+                        <PersonalInformation />
                     </Route>
 
                     <Route exact path="/signup/requestsent" >
-                        <RequestSent/>
+                        <RequestSent />
                     </Route>
 
                     <Route exact path="/signup/secureaccount" >
-                        <SecureAccount/>
+                        <SecureAccount />
                     </Route>
 
-                    <Route exact path="/admin/activatedeactivatecard" >
-                        <ActivateDeactivateCard/>
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/activatedeactivatecard" >
+                        {localStorage.getItem("aToken") ? <ActivateDeactivateCard /> : <Home />}
+
+
                     </Route>
 
                     <Route exact path="/user/report" >
-                        <Report/>
+                        <Report />
                     </Route>
 
                     <Route exact path="/user/support" >
-                        <Support/>
+                        <Support />
                     </Route>
 
-                    <Route exact path="/admin/adminbalancecontrol" >
-                        <AdminBalanceControl/>
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/adminbalancecontrol" >
+                        {localStorage.getItem("aToken") ? <AdminBalanceControl /> : <Home />}
+
+
                     </Route>
 
                     <Route exact path="/user/fundtransfer" >
-                        <FundTransfer/>
+                        <FundTransfer />
                     </Route>
 
                     <Route exact path="/user/changepassword" >
-                        <ChangePassword/>
+                        <ChangePassword />
                     </Route>
 
                     <Route exact path="/user/transaction" >
-                        <UserTransaction/>
+                        <UserTransaction />
                     </Route>
 
-                    <Route exact path="/admin/adminbulktransferaction" >
-                        <AdminBulkTransferAction/>
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/adminbulktransferaction" >
+                        {localStorage.getItem("aToken") ? <AdminBulkTransferAction /> : <Home />}
+
+
                     </Route>
+
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/adminbulkregisteruser" >
+                        {localStorage.getItem("aToken") ? <AdminBulkRegisterUser /> : <Home />}
+
+
+                    </Route>
+
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/adminreport" >
+                        {localStorage.getItem("aToken") ? <AdminReport /> : <Home />}
+
+
+                    </Route>
+
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/adminsupport" >
+                        {localStorage.getItem("aToken") ? <AdminSupport /> : <Home />}
+
+
+                    </Route>
+
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/userdetails" >
+                        {localStorage.getItem("aToken") ? <AdminUserDetails /> : <Home />}
+
+
+                    </Route>
+
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/singleuserregistration" >
+                        {localStorage.getItem("aToken") ? <AdminSingleUserRegistration /> : <Home />}
+
+
+                    </Route>
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/adminsendinterest" >
+                        {localStorage.getItem("aToken") ? <AdminSendInterest /> : <Home />}
+
+
+                    </Route>
+                    <Route exact path="/846BC3C2F47B67D3932E98CF9306F2CB7B3854696870B64C6EBBEF066CE69C11/adminchangepaymentaddress" >
+                        {localStorage.getItem("aToken") ? <AdminChangePaymentAddress /> : <Home />}
+
+
+                    </Route>
+
 
 
 
 
                 </Switch>
-                
+
             </Router>
         </div>
     );

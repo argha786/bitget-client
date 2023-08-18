@@ -12,7 +12,7 @@
     background-repeat: no-repeat;
     background-size: 100%;
     position: relative;
-    background-image: url(../Assets/Background/Bg05.jpg);
+background-image: url(../Assets/Background/Bg05.jpg);
 
 }
 @keyframes slideInFromTop {

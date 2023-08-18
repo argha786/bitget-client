@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -23,32 +23,38 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import axios from "axios"
 import ParticleAnimation from './components/ParticleAnimation';
+import { useHistory } from 'react-router-dom';
 
-
+import { v4 as uuidv4 } from 'uuid';
 export default function UserTransaction() {
+  let history = useHistory();
 
-
-  let [rows, setRow]=useState([]);
+  let [rows, setRow] = useState([]);
   // eslint-disable-next-line
-  let [tempRows, setTempRows]=useState([])
+  let [tempRows, setTempRows] = useState([])
   // eslint-disable-next-line
-  let [tempCounter, setTempCounter]=useState();
+  let [tempCounter, setTempCounter] = useState();
 
-  async function fetchData(){
-    let temp=[];
-    await axios.post(`${process.env.REACT_APP_SERVER}/getusertransaction`, {userId: JSON.parse(localStorage.getItem("data")).userId})
-    .then(async (response)=>{
-      await setTempRows(response.data.transaction);
-      console.log(response.data)
-
-      response.data.transaction.map(async (element)=>{
-        await temp.push(createData(element.rcpt, element.date, element.action, element.amount, element.reason));
-        await setRow(temp)
+  async function fetchData() {
+    let temp = [];
+    await axios.post(`${process.env.REACT_APP_SERVER}/getusertransaction`, { userId: JSON.parse(localStorage.getItem("data")).userId },
+      {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
       })
-    })
-    
+      .then(async (response) => {
+        await setTempRows(response.data.transaction);
+        // console.log(response.data)
+
+        response.data.transaction.map(async (element) => {
+          await temp.push(createData(element.rcpt, element.date, element.action, element.amount, element.reason));
+          await setRow(temp)
+        })
+      })
+
   }
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
     // eslint-disable-next-line
   }, [tempCounter])
@@ -57,16 +63,17 @@ export default function UserTransaction() {
 
 
 
-  function createData(recipient, date, action, amount, reason) {
+  function createData(recipient, date, action, amount, reason, transaction) {
     return {
       recipient,
       date,
       action,
       amount,
-      reason
+      reason,
+      transaction
     };
   }
-  
+
   // const rows = [
   //   createData('Cupcake', "Activated", 3.7, 67, 4.3, 11),
   //   createData('Donut', 452, 25.0, 51, 4.9),
@@ -83,8 +90,8 @@ export default function UserTransaction() {
   //   createData('Oreo', 437, 18.0, 63, 4.0),
   // ];
 
-  
-  
+
+
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
       return -1;
@@ -94,13 +101,13 @@ export default function UserTransaction() {
     }
     return 0;
   }
-  
+
   function getComparator(order, orderBy) {
     return order === 'desc'
       ? (a, b) => descendingComparator(a, b, orderBy)
       : (a, b) => -descendingComparator(a, b, orderBy);
   }
-  
+
   // This method is created for cross-browser compatibility, if you don't
   // need to support IE11, you can use Array.prototype.sort() directly
   function stableSort(array, comparator) {
@@ -114,7 +121,7 @@ export default function UserTransaction() {
     });
     return stabilizedThis.map((el) => el[0]);
   }
-  
+
   const headCells = [
     {
       id: 'recipient',
@@ -145,9 +152,15 @@ export default function UserTransaction() {
       numeric: true,
       disablePadding: false,
       label: 'Reason',
+    },
+    {
+      id: 'transaction',
+      numeric: true,
+      disablePadding: false,
+      label: 'Transaction ID',
     }
   ];
-  
+
   function EnhancedTableHead(props) {
     // eslint-disable-next-line
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
@@ -155,10 +168,10 @@ export default function UserTransaction() {
     const createSortHandler = (property) => (event) => {
       onRequestSort(event, property);
     };
-  
+
     return (
       <TableHead>
-      <ParticleAnimation/>
+        <ParticleAnimation />
         <TableRow>
           <TableCell padding="checkbox">
             {/* <Checkbox
@@ -196,7 +209,7 @@ export default function UserTransaction() {
       </TableHead>
     );
   }
-  
+
   EnhancedTableHead.propTypes = {
     numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
@@ -205,10 +218,10 @@ export default function UserTransaction() {
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
   };
-  
+
   const EnhancedTableToolbar = (props) => {
     const { numSelected } = props;
-  
+
     return (
       <Toolbar
         sx={{
@@ -239,7 +252,7 @@ export default function UserTransaction() {
             Transaction History
           </Typography>
         )}
-  
+
         {numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton>
@@ -256,7 +269,7 @@ export default function UserTransaction() {
       </Toolbar>
     );
   };
-  
+
   EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
   };
@@ -330,10 +343,13 @@ export default function UserTransaction() {
 
   return (
     <Box sx={{ width: '100%' }}>
+      <div className="backButton" style={{ "fontSize": "50px", "color": "#DF2D07" }}>
+        <i class="fas fa-chevron-circle-left" onClick={() => history.goBack()} />
+      </div>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
-          
+
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
@@ -387,6 +403,7 @@ export default function UserTransaction() {
                       <TableCell align="right">{row.action}</TableCell>
                       <TableCell align="right">{row.amount}</TableCell>
                       <TableCell align="right">{row.reason}</TableCell>
+                      <TableCell align="right">{uuidv4()}</TableCell>
                     </TableRow>
                   );
                 })}

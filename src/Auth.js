@@ -7,4 +7,5 @@ export default function auth(){
     }else{
         return 0;
     }
+     
 }

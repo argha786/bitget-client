@@ -20,7 +20,7 @@ export default function MerchantMasterCard() {
             <ParticleAnimation />
 
             <h2 >Titanium Master Card</h2>
-            <form>
+            <form className="withdrawalCardImage">
                 <img src={Titanium} alt="Titanium" />
                 <input
                     type="text"

@@ -1,5 +1,13 @@
-body{
-    overflow-x: hidden;
+.phone {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.phone .phoneVideo {
+  text-align: center;
 }
 .phone{
     display:flex;
@@ -8,19 +16,41 @@ body{
     background-size: cover;
 
 }
-.download{
-    position: relative;
-    display: flex;
-    left: -351px;
-    top: 450px;
-    width: 450px;
-   
+.phone .rating img {
+  width: 30vh;
 }
-.download .windows{
-    padding-left: 15px;
+
+.phone .download {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-.stars{
-    position: relative;
-    top:250px;
-    left:150px;
+.phone .download img {
+  width: 40%;
 }
+#phoneAnimation{
+  width: 380px;
+
+  height: 500px;
+  padding: 20px;
+}
+@media (max-width: 500px) {
+    .phone .rating {
+        width: 100%;
+        font-size: 10px;
+        text-align: center;
+      }
+    .phone .download {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .phone .download img {
+      width: 60%;
+    }
+  }

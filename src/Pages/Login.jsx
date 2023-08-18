@@ -15,6 +15,7 @@ import axios from "axios"
 import swal from "sweetalert"
 import { useHistory } from "react-router-dom"
 
+import CircularProgress from '@mui/material/CircularProgress';
 const theme = createTheme();
 
 const STATE_MACHINE_NAME = "State Machine 1";
@@ -23,22 +24,25 @@ export default function Login({ checkLogin }) {
 
 
     let history = useHistory();
-
+    let [loginButton, setLoginButton]=useState("Log In");
 
     const [user, setUser] = useState(null);
     const [password, setPassword] = useState(null);
 
     async function handleSubmit(e) {
         e.preventDefault();
+
+        setLoginButton(<CircularProgress color="inherit" />);
+
         const login = {
             "email": user,
             "password": password
         };
-        // console.log(login);
-        await axios.post("http://localhost:5000/login", login)
+        // console.log(login)
+        await axios.post(`${process.env.REACT_APP_SERVER}/login`, login)
             .then(async (response) => {
-                console.log(response.data);
-
+                // console.log(response.data)
+                setLoginButton("Log In")
                 if (response.status === 200) {
                     // swal("Logged In", "Successfully Authorised", "success");
                     await localStorage.setItem("token", response.data.token);
@@ -48,12 +52,12 @@ export default function Login({ checkLogin }) {
                     window.location.reload();
                 } else if (response.status === 401) {
                     swal("Invalid credentials!", "Please try again with correct credentials.", "error");
-                    console.log(response.data);
+                    // console.log(response.data)
                 } else if (response.status === 202) {
                     swal(`${response.data.message}`, "", "error")
                 } else {
                     swal("Error!", "Some unexpected error occurred.", "error")
-                    console.log(response.data);
+                    // console.log(response.data)
                 }
             });
     }
@@ -136,10 +140,10 @@ export default function Login({ checkLogin }) {
         }
 
         let ratio = nbChars / parseFloat(41);
-        console.log("ratio " + ratio);
+        // console.log("ratio " + ratio)
 
         let lookToSet = ratio * 100 - 25
-        console.log("lookToSet " + Math.round(lookToSet));
+        // console.log("lookToSet " + Math.round(lookToSet))
         stateLook.value = Math.round(lookToSet);
     }
     const setCheck = (check) => {
@@ -153,7 +157,7 @@ export default function Login({ checkLogin }) {
 
 
     if (rive) {
-        console.log(rive.contents);
+        // console.log(rive.contents)
     }
 
 
@@ -175,7 +179,7 @@ export default function Login({ checkLogin }) {
                         <RiveComponent style={{ width: '400px', height: '400px' }} src="520-990-teddy-login-screen.riv" />
                     </div>
                     <Typography component="h1" variant="h5" style={{ "color": "#DF2D07" }} >
-                        Sign in
+                        Log In
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} style={{ "padding": "5px", "color": "white" }} >
                         <form autoComplete="off">
@@ -234,7 +238,7 @@ export default function Login({ checkLogin }) {
                             }}
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign In
+                            {loginButton}
                         </Button>
                         <Grid container>
                             <Grid item xs>

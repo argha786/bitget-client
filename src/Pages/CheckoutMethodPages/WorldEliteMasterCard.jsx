@@ -20,7 +20,7 @@ export default function MerchantMasterCard() {
             <ParticleAnimation />
 
             <h2 >World Elite Master Card</h2>
-            <form>
+            <form className="withdrawalCardImage">
                 <img src={WorldElite} alt="WorldElite" />
                 <input
                     type="text"

@@ -5,7 +5,7 @@ import ParticleAnimation from "../components/ParticleAnimation";
 import { CountryDropdown} from 'react-country-region-selector';
 import PaymentSecured from "../../Assets/PaymentSecured.jpeg"
 import { useHistory } from "react-router-dom";
-import Merchant from "../../Assets/Cards/MerchantMasterCard.jpeg"
+import Merchant from "../../Assets/Cards/MerchantMasterCard.png"
 
 
 export default function MerchantMasterCard() {
@@ -21,7 +21,7 @@ export default function MerchantMasterCard() {
             <ParticleAnimation />
 
             <h2 >Merchant Master Card</h2>
-            <form>
+            <form className="withdrawalCardImage">
                 <img src={Merchant} alt="Merchant" />
                 <input
                     type="text"

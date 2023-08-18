@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BankWithdrawalImage from "../Assets/BankWithdrawal.jpeg"
+import BankWithdrawalImage from "../Assets/BankWithdrawal1.png"
 
 import "../css/Payment.css"
 import ParticleAnimation from "./components/ParticleAnimation";
@@ -7,27 +7,33 @@ import axios from "axios"
 
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
 export default function BankWithdrawal() {
-    let [acName, setAcName] = useState();
-    let [acNumber, setAcNumber] = useState();
-    let [bankName, setBankName] = useState();
-    let [swiftcode, setSwiftcode] = useState();
-    let [amount, setAmount] = useState();
+
+    let [acName, setAcName] = useState("");
+    let [acNumber, setAcNumber] = useState("");
+    let [bankName, setBankName] = useState("");
+    let [swiftcode, setSwiftcode] = useState("");
+    let [amount, setAmount] = useState("");
     let history = useHistory()
 
-
+    let [withdrawButton, setWithdrawButton]=useState("Withdraw");
 
 
     function handleClick(e) {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER}/withdrawal`, 
-        { userId: JSON.parse(localStorage.getItem("data")).userId, amount: amount},
+
+        setWithdrawButton(<CircularProgress color="inherit" />);
+        axios.post(`${process.env.REACT_APP_SERVER}/withdrawal`, { userId: JSON.parse(localStorage.getItem("data")).userId, amount: amount, mode: "Bank Withdrawal" , address: acNumber},
         {headers : {
             "Authorization" :`Bearer ${localStorage.getItem("token")}`}
         })
-        .then((response) => {
+            .then((response) => {
+                setWithdrawButton("Withdraw")
                 if (response.status === 200) {
                     swal("Withdrawal Complete!", "Withdrawal amount has been deducted from your balance.", "success")
+                    
+                    .then(()=>history.push("/user/dashboard"));
                 } else if (response.status === 203) {
 
                     swal({
@@ -47,9 +53,12 @@ export default function BankWithdrawal() {
     }
     return (
         <div className="payment" >
+            <div className="backButton">
+                <i class="fas fa-chevron-circle-left" onClick={() => history.goBack()} />
+            </div>
             <ParticleAnimation />
-            <h1>Bank Withdrawal</h1>
-            <form style={{ "marginTop": "50px" }} >
+            <h1 style={{ "width": "100%", "textAlign": "center" }} >Bank Withdrawal</h1>
+            <form style={{ "marginTop": "50px" }} className="withdrawalCardImage">
                 <img src={BankWithdrawalImage} alt="BankWithdrawal" />
                 <input
                     type="text"
@@ -84,14 +93,14 @@ export default function BankWithdrawal() {
                     placeholder="Swift Code*"
                 />
                 <input
-                    type="text"
+                    type="number"
                     onChange={(e) => {
                         setAmount(e.target.value)
                     }}
                     value={amount}
                     placeholder="Amount*"
                 />
-                <button onClick={handleClick} >Withdraw</button>
+                <button onClick={handleClick} >{withdrawButton}</button>
 
             </form>
         </div>

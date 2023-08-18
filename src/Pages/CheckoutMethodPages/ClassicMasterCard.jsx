@@ -15,7 +15,7 @@ export default function ClassicMasterCard() {
 
             <h2 >Classic Master Card</h2>
             <ParticleAnimation/>
-            <form>
+            <form className="withdrawalCardImage">
                 <img src={Classic} style={{"borderRadius":"10px"}} alt="ClassicMasterCard" />
                 <input
                     type="text"

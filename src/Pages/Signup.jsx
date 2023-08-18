@@ -3,12 +3,12 @@ import { Link, useHistory } from "react-router-dom";
 
 import axios from "axios";
 import swal from "sweetalert";
-
+import SignupImage from '../Assets/Signup.png'
 
 import "../css/Payment.css"
 // import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
 import ParticleAnimation from "./components/ParticleAnimation"
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Signup() {
 
@@ -28,7 +28,7 @@ export default function Signup() {
     let [image, setImage] = useState();
     // eslint-disable-next-line
     let [postImageBase64, setPostImageBase64] = useState();
-    
+    let [registerButton, setRegisterButton]=useState("Register")
     //Createing new form data
     const data = new FormData();
 
@@ -87,12 +87,15 @@ export default function Signup() {
 
     function handleClick(e) {
         e.preventDefault();
+        setRegisterButton(<CircularProgress color="inherit" />);
         if (password !== cPassword) {
             swal("Password do not match!", "Please check your password and try again.", "error")
         } else {
 
             axios.post(`${process.env.REACT_APP_SERVER}/signupstep1`, data)
                 .then((response) => {
+
+                    setRegisterButton("Register")
                     if (response.status === 200) {
                         sessionStorage.setItem("tempUserId", response.data.userId);
                         history.push("/signup/verifyotp")
@@ -111,7 +114,7 @@ export default function Signup() {
     })
     function handleFileChange(e) {
 
-        console.log(e.target.files[0]);
+        // console.log(e.target.files[0])
         //We get the file in files[0]
         setImage(e.target.files[0]);
         const uploadedFile = e.target.files[0];
@@ -133,7 +136,7 @@ export default function Signup() {
             <ParticleAnimation />
 
             <form encType="multipart/form-data" method="POST">
-                <h1>SignUp</h1>
+                <img src={SignupImage} alt='SignupImage' id="signUpImage" />
 
                 <input
                     type="text"
@@ -185,7 +188,7 @@ export default function Signup() {
                 />
                 <label style={{ "color": "orange", "width": "80%", "textAlign": "left", "marginBottom": "0" }} >Upload your profile image</label>
                 <input name="image" id="file-input" type="file" accept="image/*" onChange={handleFileChange} />
-                <button onClick={handleClick} style={{ "width": "50%" }}>Register</button>
+                <button onClick={handleClick} style={{ "width": "50%" }}>{registerButton}</button>
                 <Link to="/login">
                     <button style={{ "width": "100%" }}>Login</button>
                 </Link>

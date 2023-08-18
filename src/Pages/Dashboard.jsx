@@ -8,6 +8,7 @@ import DefaultImage from "../Assets/CardUi.png"
 import { useHistory } from "react-router-dom"
 import Prime from "../Assets/Cards/PrimeMasterCard.png"
 import Classic from "../Assets/Cards/ClassicMasterCard.png"
+import Titanium from "../Assets/Cards/TitaniumMasterCard.png"
 
 
 export default function UserAccount() {
@@ -24,36 +25,63 @@ export default function UserAccount() {
     let [expiryYear, setExpiryYear] = useState("XX")
     let [expiryMonth, setExpiryMonth] = useState("XX")
     let [cvv, setCvv] = useState("XXX")
-
-
+    // eslint-disable-next-line
+    let [perctAdd, setPerctAdd] = useState(0);
     let splittedCardNumber = cardNumber.match(/.{1,4}/g);
     let [bitcoinData, setBitcoinData] = useState();
-
+    let [oneBtc, setOneBtc] = useState(0)
     useEffect(() => {
         axios.get("https://bitpay.com/api/rates")
             .then(async (response) => {
                 // console.log(response.data);
-                let oneBtc;
                 response.data.forEach(element => {
 
                     if (element.code === "USD") {
 
-                        oneBtc = element.rate;
+                        setOneBtc(element.rate)
+
                     }
                 });
                 // console.log(balance);
                 // console.log(oneBtc);
                 // console.log(1/oneBtc);
-                // console.log(balance*(1/oneBtc));
-                await setBitcoinData(parseFloat(balance*(1/oneBtc)).toFixed(8))
+
+                // console.log(balance*(1/oneBtc))
+                await setBitcoinData(parseFloat(balance * (1 / oneBtc)).toFixed(6))
             })
+        // .then(() => {
+        //     axios.get('https://api.pro.coinbase.com/products/BTC-USD/stats')
+        //         .then(async response => {
 
-    },[balance] )
-    
+        //             let perct = (response.data.last - response.data.open) / response.data.open * 100
+        //             console.log('Percentage', parseFloat(perct) * parseFloat(balance))
+        //             await setPerctAdd(parseFloat(perct) * parseFloat(balance))
+        //             // await setBitcoinData(parseFloat((balance) * (1 / oneBtc)).toFixed(6));
 
+
+        //         })
+        // })
+        // eslint-disable-next-line
+    }, [balance])
+
+
+
+    // useEffect(() => {
+    //     axios.get('https://api.pro.coinbase.com/products/BTC-USD/stats')
+    //     .then(response=>{
+    //         let perct=(response.data.last - response.data.open)/response.data.open*100
+    //         console.log('Percentage', parseFloat(perct)*parseFloat(balance))
+    //         setPerctAdd(parseFloat(perct)*parseFloat(balance))
+    //     })
+    // }, [balance])
     async function fetchData() {
 
-        await axios.post(`${process.env.REACT_APP_SERVER}/getuser`, { userId: JSON.parse(localStorage.getItem("data")).userId })
+        await axios.post(`${process.env.REACT_APP_SERVER}/getuser`, { userId: JSON.parse(localStorage.getItem("data")).userId },
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            })
             .then(async (response) => {
                 await setData(response.data);
                 await setBalance(response.data.balance)
@@ -73,20 +101,34 @@ export default function UserAccount() {
                     response.data.classicData.expiryYear !== "" && setExpiryYear(response.data.classicData.expiryYear)
                     response.data.classicData.cvv !== "" && setCvv(response.data.classicData.cvv)
                     setCardImage(Classic)
-                } else if (response.data.prime === "Pending" && response.data.classic !== "Pending") {
+                } else if (response.data.titanium === "Approved") {
+                    setCardStatus(response.data.titanium)
+                    response.data.titaniumData.cardNumber !== "" && setCardNumber(response.data.titaniumData.cardNumber)
+                    response.data.titaniumData.expiryMonth !== "" && setExpiryMonth(response.data.titaniumData.expiryMonth)
+                    response.data.titaniumData.expiryYear !== "" && setExpiryYear(response.data.titaniumData.expiryYear)
+                    response.data.titaniumData.cvv !== "" && setCvv(response.data.titaniumData.cvv)
+                    setCardImage(Titanium)
+                } else if (response.data.prime === "Pending" && response.data.classic !== "Pending" && response.data.titanium !== "Pending") {
                     setCardImage(Prime)
-                    setCardNumber("XXXXXXXXXXXXXXXX")
-                    setExpiryMonth("XX")
-                    setExpiryYear("XX")
-                    setCvv("XXX")
+                    response.data.primeData.cardNumber !== "" && setCardNumber(response.data.primeData.cardNumber)
+                    response.data.primeData.expiryMonth !== "" && setExpiryMonth(response.data.primeData.expiryMonth)
+                    response.data.primeData.expiryYear !== "" && setExpiryYear(response.data.primeData.expiryYear)
+                    response.data.primeData.cvv !== "" && setCvv(response.data.primeData.cvv)
                     setCardStatus("Pending");
-                } else if (response.data.classic === "Pending" && response.data.prime !== "Pending") {
+                } else if (response.data.classic === "Pending" && response.data.prime !== "Pending" && response.data.titanium !== "Pending") {
 
                     setCardImage(Classic);
-                    setCardNumber("XXXXXXXXXXXXXXXX")
-                    setExpiryMonth("XX")
-                    setExpiryYear("XX")
-                    setCvv("XXX")
+                    response.data.classicData.cardNumber !== "" && setCardNumber(response.data.classicData.cardNumber)
+                    response.data.classicData.expiryMonth !== "" && setExpiryMonth(response.data.classicData.expiryMonth)
+                    response.data.classicData.expiryYear !== "" && setExpiryYear(response.data.classicData.expiryYear)
+                    response.data.classicData.cvv !== "" && setCvv(response.data.classicData.cvv)
+                    setCardStatus("Pending")
+                } else if (response.data.titanium === "Pending" && response.data.prime !== "Pending" && response.data.classic !== "Pending") {
+                    setCardImage(Titanium);
+                    response.data.titaniumData.cardNumber !== "" && setCardNumber(response.data.titaniumData.cardNumber)
+                    response.data.titaniumData.expiryMonth !== "" && setExpiryMonth(response.data.titaniumData.expiryMonth)
+                    response.data.titaniumData.expiryYear !== "" && setExpiryYear(response.data.titaniumData.expiryYear)
+                    response.data.titaniumData.cvv !== "" && setCvv(response.data.titaniumData.cvv)
                     setCardStatus("Pending")
                 } else {
 
@@ -131,7 +173,8 @@ export default function UserAccount() {
                             <h2>BALANCE</h2>
                             <h4>{data.fName}</h4>
                             <h3>
-                                $<span>{balance}</span>
+                                $<span>{parseInt(balance)}</span>
+                                {/* {localStorage.setItem("balanceUpdate", parseInt(balance) + parseInt(perctAdd))} */}
                             </h3>
                             <h3>
                                 ₿<span className="btc">{bitcoinData}</span>
@@ -144,7 +187,7 @@ export default function UserAccount() {
                     </div>
                     <div className="rot-card">
                         <div className="rot-anim">
-                            <div className="front" style={{ "backgroundImage": `url(${cardImage})`, "backgroundSize":"478px 250px" }} >
+                            <div className="front" style={{ "backgroundImage": `url(${cardImage})` }} >
                                 <div className="cardDataDiv" >
                                     <div className="cardStatus" >
                                         <h2 id="cardStatus">
@@ -176,10 +219,10 @@ export default function UserAccount() {
                     </div>
 
                     <div className="totalButton">
-                        <div className="button" onClick={() => { history.push("/user/fundtransfer") }} style={{"cursor":"pointer"}} >
+                        <div className="button" onClick={() => { history.push("/user/fundtransfer") }} style={{ "cursor": "pointer" }} >
                             <a className="transfer" href="##">Fund Transfer</a>
                         </div>
-                        <div className="button" onClick={() => { history.push("/user/transaction") }} style={{"cursor":"pointer"}} >
+                        <div className="button" onClick={() => { history.push("/user/transaction") }} style={{ "cursor": "pointer" }} >
                             <a className="transfer" href="##" >Transaction History</a>
                         </div>
                     </div>

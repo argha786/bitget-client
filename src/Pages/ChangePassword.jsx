@@ -6,13 +6,17 @@ import axios from "axios";
 import swal from "sweetalert";
 
 import { useHistory } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
+
 export default function ChangePassword() {
 
     let [password, setPassword] = useState("");
     let [cPassword, setCPassword] = useState("")
     let [otp, setOtp] = useState("")
     let otpId = sessionStorage.getItem("otpId")
-    let history=useHistory()
+    let history = useHistory()
+    let [changePasswordButton, setChangePasswordButton]=useState("Change Password")
+
     const data = {
         password: password,
         cPassword: cPassword,
@@ -23,14 +27,21 @@ export default function ChangePassword() {
 
         e.preventDefault();
 
-        axios.post(`${process.env.REACT_APP_SERVER}/changepassword`, data)
+        setChangePasswordButton(<CircularProgress color="inherit" />)
+        axios.post(`${process.env.REACT_APP_SERVER}/changepassword`, data,
+            {
+                headers: {
+                    "Authorization": `Bearer ${sessionStorage.getItem("otpId")}`
+                }
+            })
             .then((response) => {
+                setChangePasswordButton("Change Password")
                 if (response.status === 200) {
 
                     swal(`${response.data.message}`, "", "success")
-                    .then(()=>{
-                        history.push("/login")
-                    })
+                        .then(() => {
+                            history.push("/login")
+                        })
                 } else if (response.status === 202) {
                     swal(`${response.data.message}`, "", "error")
 
@@ -60,7 +71,7 @@ export default function ChangePassword() {
                     value={cPassword}
                     onChange={(e) => { setCPassword(e.target.value) }}
                 />
-                <button onClick={handleClick} >Change Password</button>
+                <button onClick={handleClick} >{changePasswordButton}</button>
             </form>
 
         </div>

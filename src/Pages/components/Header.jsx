@@ -5,7 +5,10 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-import Logo from '../../Assets/Logo.png'
+import PrivacyPolicy from "../../Assets/Privacy_Policy.pdf"
+import TermsAndCondition from "../../Assets/Terms_And_Condition.pdf"
+import Logo from "../../Assets/Logo.jpg"
+import "../../css/Payment.css"
 function Header() {
     const [burgerStatus, setBurgerStatus] = useState(false);
 
@@ -14,7 +17,12 @@ function Header() {
     let [balance, setBalance] = useState(0);
     useEffect(() => {
         if (localStorage.getItem("data")) {
-            axios.post(`${process.env.REACT_APP_SERVER}/getuser`, { userId: JSON.parse(localStorage.getItem("data")).userId })
+            axios.post(`${process.env.REACT_APP_SERVER}/getuser`, { userId: JSON.parse(localStorage.getItem("data")).userId },
+                {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
+                })
                 .then((response) => {
                     setBalance(response.data.balance)
                 })
@@ -26,9 +34,9 @@ function Header() {
         <Container>
             <Link to="/">
                 <img
-                    style={{ width: "7%" }}
                     src={Logo}
                     alt="Logo"
+                    id="logo"
                 />
             </Link>
 
@@ -44,14 +52,14 @@ function Header() {
 
                 <NavBlack  >
                     <li>
-                        <Link to="/"  onClick={() => setBurgerStatus(false)}  >Home</Link>
+                        <Link to="/" onClick={() => setBurgerStatus(false)}  >Home</Link>
                     </li>
                 </NavBlack>
 
                 {localStorage.getItem("token")
                     ? <NavBlack>
                         <li>
-                            <Link to="/user/dashboard"  onClick={() => setBurgerStatus(false)} >Dashboard</Link>
+                            <Link to="/user/dashboard" onClick={() => setBurgerStatus(false)} >Dashboard</Link>
                         </li>
                     </NavBlack>
                     : null
@@ -60,7 +68,7 @@ function Header() {
                 {localStorage.getItem("token")
                     ? <NavBlack>
                         <li>
-                            <Link to="/account"  onClick={() => setBurgerStatus(false)} >My Account</Link>
+                            <Link to="/account" onClick={() => setBurgerStatus(false)} >My Account</Link>
                         </li>
                     </NavBlack>
                     : null
@@ -68,7 +76,7 @@ function Header() {
                 {localStorage.getItem("token")
                     ? <NavBlack>
                         <li>
-                            <Link to="/card"  onClick={() => setBurgerStatus(false)} >Active Debit Card</Link>
+                            <Link to="/card" onClick={() => setBurgerStatus(false)} >Active Debit Card</Link>
                         </li>
                     </NavBlack>
                     : null
@@ -76,7 +84,7 @@ function Header() {
                 {localStorage.getItem("token")
                     ? <NavBlack>
                         <li>
-                            <Link to="/withdrawal"  onClick={() => setBurgerStatus(false)} >Withdrawal</Link>
+                            <Link to="/withdrawal" onClick={() => setBurgerStatus(false)} >Withdrawal</Link>
                         </li>
                     </NavBlack>
                     : null
@@ -84,7 +92,7 @@ function Header() {
                 {localStorage.getItem("token")
                     ? <NavBlack>
                         <li>
-                            <Link to="/user/report"  onClick={() => setBurgerStatus(false)} >Report</Link>
+                            <Link to="/user/report" onClick={() => setBurgerStatus(false)} >Report</Link>
                         </li>
                     </NavBlack>
                     : null
@@ -93,7 +101,7 @@ function Header() {
                     ?
                     <NavBlack>
                         <li>
-                            <Link to="/user/support"  onClick={() => setBurgerStatus(false)} >Support</Link>
+                            <Link to="/user/support" onClick={() => setBurgerStatus(false)} >Support</Link>
                         </li>
                     </NavBlack>
                     : null
@@ -102,7 +110,7 @@ function Header() {
                     ?
                     <NavBlack>
                         <li>
-                            <Link to="/user/transaction"  onClick={() => setBurgerStatus(false)} >My Transaction</Link>
+                            <Link to="/user/transaction" onClick={() => setBurgerStatus(false)} >My Transaction</Link>
                         </li>
                     </NavBlack>
                     : null
@@ -137,14 +145,32 @@ function Header() {
                 {localStorage.getItem("data")
                     ? <NavBlack>
                         <li onClick={() => setBurgerStatus(false)}>
-                            <Link to="/user/myaccount">${balance}</Link>
+                            <Link to="/user/dashboard">${balance}</Link>
                         </li>
                     </NavBlack>
-                    :<NavBlack>
+                    : <NavBlack>
                         <li onClick={() => setBurgerStatus(false)}>
                             <Link to="/login">Log In</Link>
                         </li>
                     </NavBlack>
+                }
+                {localStorage.getItem("token")
+                    ? null
+                    : <NavBlack>
+                        <li>
+                            <a href={PrivacyPolicy} target='_blank' rel="noreferrer" >Privacy Policy</a>
+                        </li>
+                    </NavBlack>
+
+                }
+                {localStorage.getItem("token")
+                    ? null
+                    : <NavBlack>
+                        <li>
+                            <a href={TermsAndCondition} target='_blank' rel="noreferrer" >Terms and Condition</a>
+                        </li>
+                    </NavBlack>
+
                 }
             </BurgerNav>
         </Container>
@@ -163,7 +189,7 @@ const Container = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 100;
 `;
 const NavBlack = styled.div`
 background-image: linear-gradient(rgb(29, 22, 22),rgb(43, 42, 42),rgb(10, 15, 13));   

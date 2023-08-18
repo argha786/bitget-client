@@ -14,7 +14,7 @@ export default function PrimeMasterCard() {
 
             <h2>Withdraw using Prime Master Card</h2>
             <ParticleAnimation/>
-            <form style={{ "marginTop": "20px" }} >
+            <form style={{ "marginTop": "20px" }}className="withdrawalCardImage" >
                 <br />
                 <br />
                 <img src={Prime} alt="PrimeMasterCard" />
