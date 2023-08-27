@@ -17,6 +17,10 @@ import TelegramFollow from "./components/TelegramFollow";
 import PaymentSecure from "../Assets/PaymentSecured.jpeg"
 
 import TelegramImage from "../Assets/TelegramImage.png"
+import WhereWeInvest from "./HomeComponents/WhereWeInvest";
+import ProfitPercentage from "./HomeComponents/ProfitPercentage";
+
+
 export default function Home() {
     return (
         <div style={{ "width": "100%" }} >
@@ -25,11 +29,14 @@ export default function Home() {
             <Welcome />
             {/* <TelegramFollow/> */}
             <WhatIs />
-            <FeaturedIn />
+            {/* <FeaturedIn /> */}
             <Phone />
             <Actions />
 
             <Reviews />
+
+            <WhereWeInvest/>
+            <ProfitPercentage/>
             <Founder />
             <Contact />
             {/* <Footer/> */}

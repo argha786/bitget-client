@@ -1,21 +1,30 @@
-.contact1, .contact2{
-    color: white;
-    width: 100%;
-    /* background-image: url(../Assets/Contact.jpg); */
-    background-size: 100% 100%;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding-top: 190px;
-    padding-bottom: 190px;
-    font-size: xx-large;
-    line-height: 1.9;
-    opacity: 0.8;
+.contact1,
+.contact2 {
+  color: white;
+  width: 100%;
+  /* background-image: url(../Assets/Contact.jpg); */
+  background-size: 100% 100%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 190px;
+  padding-bottom: 190px;
+  font-size: xx-large;
+  line-height: 1.9;
+  opacity: 0.8;
 }
-.contact a{
-    color: blue;
+.contact a {
+  color: blue;
 
-    font-size: 1ch;
+  font-size: 1ch;
+}
+.solid {
+  text-decoration: solid;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  background-color: rgba(255, 228, 196, 0.204);
 }

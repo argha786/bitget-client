@@ -6,7 +6,7 @@ import Pay from "../../Assets/Pay.png"
 import Pay2 from "../../Assets/Pay2.png"
 
 import USD from "../../Assets/USD.png"
-
+import Bank from "../../Assets/BankWithdrawal2.png"
 export default function Actions(){
     return(
         <div className="actions" >
@@ -21,12 +21,16 @@ export default function Actions(){
             </div>
             <div className="actionCard" >
                 <img src={Pay2} alt="pay" />
-                <h1>Activate Debit Card</h1>
+                <h1>Automatic Trade</h1>
             </div>
             <div className="actionCard" >
                 <img src={USD} alt="USD" />
-                <h1>Withdraw funds to bank/bitcoin and paypal</h1>
+                <h1>Exciting gifts and referral.</h1>
+            </div>
+            <div className="actionCard" >
+                <img src={Bank} alt="USD" />
+                <h1>Withdrawal</h1>
             </div>
         </div>
-    );
+    ); 
 }

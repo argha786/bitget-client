@@ -9,6 +9,8 @@ import PrivacyPolicy from "../../Assets/Privacy_Policy.pdf"
 import TermsAndCondition from "../../Assets/Terms_And_Condition.pdf"
 import Logo from "../../Assets/Logo.jpg"
 import "../../css/Payment.css"
+
+import Bg01 from '../../Assets/Background/Bg05.jpg'
 function Header() {
     const [burgerStatus, setBurgerStatus] = useState(false);
 

@@ -10,9 +10,14 @@
     color: white;
     /* background-image: url(https://wallpaperaccess.com/full/395434.jpg); */
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
     position: relative;
 background-image: url(../Assets/Background/Bg05.jpg);
+
+}
+.onlyBack{
+  background-image: url(../Assets/Background/Bg05.jpg);
+  padding: 10px 0 0 0;
 
 }
 @keyframes slideInFromTop {

@@ -69,7 +69,7 @@ function App() {
 
             <Router>
                 {/* <CurrentNavbar /> */}
-                <Header />
+                {/* <Header /> */}
 
                 <Switch>
 
