@@ -39,21 +39,21 @@ export default function WhereWeInvest() {
         arrows={false}
       >
         <div className="contact1" style={{ backgroundImage: `url(${Image1})`}}>
-          <div className="solid" >Apple</div>
+          <div className="solid" >Automatic Trading</div>
         </div>
         <div className="contact2" style={{ backgroundImage: `url(${Image2})` }}>
-          <div className="solid">Head Office: SFalkenstreet 14 , Zurich 8024 , Switzerland</div>
+          <div className="solid">AI Technology</div>
         </div>
         <div className="contact2" style={{ backgroundImage: `url(${Image3})` }}>
-          <div className="solid">Head Office: SFalkenstreet 14 , Zurich 8024 , Switzerland</div>
+          <div className="solid">Blockchain System</div>
          
         </div>
         <div className="contact2" style={{ backgroundImage: `url(${Image4})` }}>
-          <div className="solid">Head Office: SFalkenstreet 14 , Zurich 8024 , Switzerland</div>
+          <div className="solid">Cryptocurrency Project</div>
           
         </div>
         <div className="contact2" style={{ backgroundImage: `url(${Image5})` }}>
-          <div className="solid">Head Office: SFalkenstreet 14 , Zurich 8024 , Switzerland</div>
+          <div className="solid">Real Estate Project</div>
         </div>
       </Carousel>
     </div>
